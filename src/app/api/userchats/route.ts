@@ -1,3 +1,4 @@
+// app/api/userchats/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import connectDb from '@/lib/mongoDb';
 import UserChats from '@/lib/models/userChat';

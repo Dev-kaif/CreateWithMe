@@ -1,3 +1,4 @@
+// app/api/chats/[id]/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import connectDb from '@/lib/mongoDb';
 import Chat from '@/lib/models/chat';
@@ -10,7 +11,7 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = params;
+    const { id } = await params;
     const chat = await Chat.findById(id);
     if (!chat) {
       return NextResponse.json({ message: 'Chat not found' }, { status: 404 });
@@ -27,7 +28,7 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = params;
+    const { id } = await params;
     const body = await req.json();
     const { question, answer } = body;
     

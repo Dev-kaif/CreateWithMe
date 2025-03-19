@@ -1,2 +1,177 @@
 @import "tailwindcss";
 
+@layer base {
+    :root {
+      --background: 240 10% 3.9%;
+      --foreground: 0 0% 98%;
+      --card: 240 10% 3.9%;
+      --card-foreground: 0 0% 98%;
+      --popover: 240 10% 3.9%;
+      --popover-foreground: 0 0% 98%;
+      --primary: 0 0% 98%;
+      --primary-foreground: 240 5.9% 10%;
+      --secondary: 240 3.7% 15.9%;
+      --secondary-foreground: 0 0% 98%;
+      --muted: 240 3.7% 15.9%;
+      --muted-foreground: 240 5% 64.9%;
+      --accent: 240 3.7% 15.9%;
+      --accent-foreground: 0 0% 98%;
+      --destructive: 0 62.8% 30.6%;
+      --destructive-foreground: 0 0% 98%;
+      --border: 240 3.7% 15.9%;
+      --input: 240 3.7% 15.9%;
+      --ring: 240 4.9% 83.9%;
+      
+      --sidebar-background: 240 6% 10%;
+      --sidebar-foreground: 240 5% 84.9%;
+      --sidebar-primary: 240 5.9% 64.9%;
+      --sidebar-primary-foreground: 0 0% 100%;
+      --sidebar-accent: 240 6% 15%;
+      --sidebar-accent-foreground: 240 5% 84.9%;
+      --sidebar-border: 240 6% 15%;
+      --sidebar-ring: 240 4.9% 83.9%;
+      
+      --radius: 0.5rem;
+    }
+  }
+  
+  /* @layer base {
+    * {
+      @apply border-border selection:bg-white/10 selection:text-white;
+    }
+    
+    body {
+      @apply bg-background text-foreground antialiased;
+      font-feature-settings: "ss01", "ss02", "cv01", "cv02", "cv03";
+    }
+  
+    html {
+      @apply scroll-smooth;
+    }
+  }
+  
+  @layer utilities {
+    .scrollbar-thin {
+      scrollbar-width: thin;
+    }
+    
+    .scrollbar-thin::-webkit-scrollbar {
+      width: 4px;
+    }
+    
+    .scrollbar-thin::-webkit-scrollbar-track {
+      @apply bg-transparent;
+    }
+    
+    .scrollbar-thin::-webkit-scrollbar-thumb {
+      @apply bg-secondary rounded-full;
+    }
+    
+    .glass-morphism {
+      @apply backdrop-blur-xl bg-white/5 border border-white/10 shadow-[0_4px_12px_-2px_rgba(0,0,0,0.3)];
+    }
+    
+    .neo-blur {
+      @apply backdrop-blur-2xl bg-black/40 border border-white/10;
+    }
+  }
+  
+
+#root {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+  }
+  
+  .logo {
+    height: 6em;
+    padding: 1.5em;
+    will-change: filter;
+    transition: filter 300ms;
+  }
+  .logo:hover {
+    filter: drop-shadow(0 0 2em #646cffaa);
+  }
+  .logo.react:hover {
+    filter: drop-shadow(0 0 2em #61dafbaa);
+  }
+  
+  @keyframes logo-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  @media (prefers-reduced-motion: no-preference) {
+    a:nth-of-type(2) .logo {
+      animation: logo-spin infinite 20s linear;
+    }
+  }
+  
+  .card {
+    padding: 2em;
+  }
+  
+  .read-the-docs {
+    color: #888;
+  }
+  
+  @layer utilities {
+    .scrollbar-thin::-webkit-scrollbar {
+      width: 6px;
+    }
+  
+    .scrollbar-thin::-webkit-scrollbar-track {
+      background: transparent;
+    }
+  
+    .scrollbar-thin::-webkit-scrollbar-thumb {
+      background-color: rgba(156, 163, 175, 0.3);
+      border-radius: 3px;
+    }
+  
+    .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+      background-color: rgba(156, 163, 175, 0.5);
+    }
+    
+    .animate-pulse {
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    
+    .animate-fade-in {
+      animation: fadeIn 0.3s ease-in-out;
+    }
+    
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.6;
+      }
+    }
+    
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  }
+  
+  @layer components {
+    .glass-morphism {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(10px);
+    }
+  } */
