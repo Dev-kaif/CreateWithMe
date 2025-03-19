@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import connectDb from '@/lib/mongoDb';
 import Chat from '@/lib/models/chat';
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 // Ensure DB connection
 connectDb();
@@ -23,36 +24,49 @@ export async function GET(
   }
 }
 
-export async function PUT(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY as string); 
+
+export async function generateAiResponse(question: string): Promise<string> {
+  try {
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const result = await model.generateContent(question);
+    const responseText = await result.response.text();
+    console.log(question , responseText);
+    
+    return responseText || "I'm not sure how to respond.";
+  } catch (error) {
+    console.error("Error generating AI response:", error);
+    return "I encountered an error while generating a response.";
+  }
+}
+
+
+
+
+export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
   try {
     const { id } = await params;
     const body = await req.json();
-    const { question, answer } = body;
-    
-    if (!answer) {
-      return NextResponse.json(
-        { message: 'Answer is required' },
-        { status: 400 }
-      );
+    const { question } = body;
+
+    if (!question) {
+      return NextResponse.json({ message: 'Question is required' }, { status: 400 });
     }
-    
-    // Create new history items (no image field included)
-    const newItems = [
-      ...(question ? [{ role: "user", parts: [{ text: question }] }] : []),
-      { role: "model", parts: [{ text: answer }] },
-    ];
-    
-    const updatedChat = await Chat.updateOne(
-      { _id: id },
-      { $push: { history: { $each: newItems } } }
-    );
-    
-    return NextResponse.json(updatedChat, { status: 200 });
+
+    // Save user message first
+    await Chat.updateOne({ _id: id }, { $push: { history: { role: "user", parts: [{ text: question }] } } });
+
+    // Generate response using an AI API (e.g., OpenAI)
+    const aiResponse = await generateAiResponse(question); // Implement this function
+
+    // Save AI response
+    await Chat.updateOne({ _id: id }, { $push: { history: { role: "model", parts: [{ text: aiResponse }] } } });
+
+    return NextResponse.json({ message: 'Chat updated' }, { status: 200 });
   } catch (err) {
     console.error('Error in PUT /api/chats/[id]:', err);
     return NextResponse.json({ message: 'Error updating chat' }, { status: 500 });
   }
 }
+
