@@ -22,11 +22,12 @@ const ChatSidebar = ({ activeChat, onChatSelect, onNewChat }: ChatSidebarProps) 
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    
     const fetchChats = async () => {
       try {
         const response = await fetch(`/api/userchats?userId=${userId}`);
         const data = await response.json();
-        setChats(data);
+        setChats(data)
       } catch (error) {
         console.error("Error fetching chats:", error);
       } finally {
@@ -37,6 +38,7 @@ const ChatSidebar = ({ activeChat, onChatSelect, onNewChat }: ChatSidebarProps) 
     fetchChats();
   }, []);
 
+
   const handleNewChat = async () => {
     try {
       const response = await fetch('/api/chats', {
@@ -46,7 +48,9 @@ const ChatSidebar = ({ activeChat, onChatSelect, onNewChat }: ChatSidebarProps) 
       });
       const data = await response.json();
       onNewChat(data.chatId);
+
       setChats((prev) => [{ id: data.chatId, title: 'New Chat', timestamp: new Date() }, ...prev]);
+      
     } catch (error) {
       console.error("Error creating new chat:", error);
     }

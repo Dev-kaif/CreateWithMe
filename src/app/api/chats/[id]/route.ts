@@ -63,7 +63,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
     // Save AI response
     await Chat.updateOne({ _id: id }, { $push: { history: { role: "model", parts: [{ text: aiResponse }] } } });
 
-    return NextResponse.json({ message: 'Chat updated' }, { status: 200 });
+    return NextResponse.json({ message: 'Chat updated'}, { status: 200 });
   } catch (err) {
     console.error('Error in PUT /api/chats/[id]:', err);
     return NextResponse.json({ message: 'Error updating chat' }, { status: 500 });

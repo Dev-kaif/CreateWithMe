@@ -8,6 +8,7 @@ interface ChatInputProps {
   placeholder?: string;
 }
 
+
 const ChatInput = ({ chatId, onMessageSent, disabled = false, placeholder = "Type a message..." }: ChatInputProps) => {
   const [message, setMessage] = useState('');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -26,13 +27,14 @@ const ChatInput = ({ chatId, onMessageSent, disabled = false, placeholder = "Typ
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!chatId || !message.trim() || disabled) return;
-
+    
     try {
       const response = await fetch(`/api/chats/${chatId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ question: message, answer: "" }), // Empty answer, will be handled on backend
       });
+
 
       if (!response.ok) {
         console.error("Failed to send message");

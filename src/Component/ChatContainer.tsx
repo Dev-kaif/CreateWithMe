@@ -12,9 +12,10 @@ interface ChatContainerProps {
   chatId: string | null;
   isLoading: boolean;
   setIsLoading: (loading: boolean) => void;
+  fetchAgain: boolean;
 }
 
-const ChatContainer = ({ chatId, isLoading, setIsLoading }: ChatContainerProps) => {
+const ChatContainer = ({ chatId, isLoading, setIsLoading,fetchAgain }: ChatContainerProps) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [messages, setMessages] = useState<Message[]>([]);
 
@@ -23,14 +24,15 @@ const ChatContainer = ({ chatId, isLoading, setIsLoading }: ChatContainerProps) 
     setIsLoading(true);
 
     try {
-      const response = await fetch(`/api/chats/${chatId}`);
+      const response = await fetch(`http://localhost:3000/api/chats/${chatId}`);
+      
       const chatData = await response.json();
 
       if (response.ok) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const formattedMessages = chatData.history.map((msg: any) => ({
           id: msg._id,
-          type: msg.role === "user" ? "user" : "assistant",
+          type: msg.role === "user" ? "user" : "model",
           content: msg.parts[0].text,
           timestamp: new Date(), // Adjust if your backend provides timestamps
         }));
@@ -47,7 +49,7 @@ const ChatContainer = ({ chatId, isLoading, setIsLoading }: ChatContainerProps) 
 
   useEffect(() => {
     fetchMessages();
-  }, [chatId]);
+  }, [chatId,fetchAgain]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });

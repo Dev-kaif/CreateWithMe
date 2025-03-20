@@ -35,7 +35,7 @@ const ChatMessage = ({ type, content, timestamp, isLoading }: ChatMessageProps) 
           </div>
           <div className={`prose prose-invert max-w-none ${isLoading ? "animate-pulse" : ""}`}>
             {content.split('\n').map((line, i) => (
-              <p key={i} className="mb-2 last:mb-0">
+              <p key={i} className="mb-2 last:mb-0 text-white">
                 {line || "\u00A0"}
               </p>
             ))}

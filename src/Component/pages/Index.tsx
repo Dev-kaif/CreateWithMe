@@ -9,7 +9,8 @@ const Home = () => {
   const [chats, setChats] = useState<{ id: string; title: string }[]>([]);
   const [activeChat, setActiveChat] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const userId = "123"; // Replace this with actual user authentication logic
+  const [fetchAgain, setFetchAgain] = useState(false);
+  const userId = "123";
 
   // Fetch user chats on load
   const fetchUserChats = async () => {
@@ -56,12 +57,17 @@ const Home = () => {
     }
   };
 
+  const handleChatInput = () =>{
+    setFetchAgain((prev)=>!prev);
+    setIsLoading(true);
+  }
+
   return (
     <div className="flex h-screen">
       <ChatSidebar activeChat={activeChat} onChatSelect={handleChatSelect} onNewChat={handleNewChat} />
       <div className="flex flex-col flex-1 bg-[#121212]">
-        <ChatContainer chatId={activeChat} isLoading={isLoading} setIsLoading={setIsLoading} />
-        <ChatInput chatId={activeChat} onMessageSent={() => setIsLoading(true)} />
+        <ChatContainer fetchAgain={fetchAgain} chatId={activeChat} isLoading={isLoading} setIsLoading={setIsLoading} />
+        <ChatInput chatId={activeChat} onMessageSent={handleChatInput} />
       </div>
     </div>
   );
