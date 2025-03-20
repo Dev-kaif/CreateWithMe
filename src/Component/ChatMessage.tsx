@@ -7,11 +7,10 @@ export type MessageType = 'user' | 'assistant';
 interface ChatMessageProps {
   type: MessageType;
   content: string;
-  timestamp: Date;
   isLoading?: boolean;
 }
 
-const ChatMessage = ({ type, content, timestamp, isLoading }: ChatMessageProps) => {
+const ChatMessage = ({ type, content, isLoading }: ChatMessageProps) => {
   const isUser = type === 'user';
   
   return (
@@ -29,9 +28,6 @@ const ChatMessage = ({ type, content, timestamp, isLoading }: ChatMessageProps) 
             <h3 className="text-sm font-medium text-white/90">
               {isUser ? "You" : "Assistant"}
             </h3>
-            <span className="ml-2 text-xs text-white/50">
-              {timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-            </span>
           </div>
           <div className={`prose prose-invert max-w-none ${isLoading ? "animate-pulse" : ""}`}>
             {content.split('\n').map((line, i) => (

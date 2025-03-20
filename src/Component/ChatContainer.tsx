@@ -5,7 +5,6 @@ export interface Message {
   id: string;
   type: MessageType;
   content: string;
-  timestamp: Date;
 }
 
 interface ChatContainerProps {
@@ -34,7 +33,6 @@ const ChatContainer = ({ chatId, isLoading, setIsLoading,fetchAgain }: ChatConta
           id: msg._id,
           type: msg.role === "user" ? "user" : "model",
           content: msg.parts[0].text,
-          timestamp: new Date(), // Adjust if your backend provides timestamps
         }));
         setMessages(formattedMessages);
       } else {
@@ -64,10 +62,10 @@ const ChatContainer = ({ chatId, isLoading, setIsLoading,fetchAgain }: ChatConta
         </div>
       ) : (
         messages.map((message) => (
-          <ChatMessage key={message.id} type={message.type} content={message.content} timestamp={message.timestamp} />
+          <ChatMessage key={message.id} type={message.type} content={message.content} />
         ))
       )}
-      {isLoading && <ChatMessage type="assistant" content="Thinking..." timestamp={new Date()} isLoading />}
+      {isLoading && <ChatMessage type="assistant" content="Thinking..." isLoading />}
       <div ref={messagesEndRef} />
     </div>
   );

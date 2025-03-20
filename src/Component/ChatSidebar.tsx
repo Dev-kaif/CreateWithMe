@@ -7,7 +7,6 @@ const userId = "123";
 type Chat = {
   id: string;
   title: string;
-  timestamp: Date;
 };
 
 interface ChatSidebarProps {
@@ -49,7 +48,7 @@ const ChatSidebar = ({ activeChat, onChatSelect, onNewChat }: ChatSidebarProps) 
       const data = await response.json();
       onNewChat(data.chatId);
 
-      setChats((prev) => [{ id: data.chatId, title: 'New Chat', timestamp: new Date() }, ...prev]);
+      setChats((prev) => [{ id: data.chatId, title: 'New Chat' }, ...prev]);
       
     } catch (error) {
       console.error("Error creating new chat:", error);
