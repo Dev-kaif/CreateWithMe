@@ -172,7 +172,7 @@ async function generateAiResponse(refinedPrompt: string): Promise<string> {
 // PUT API for handling chat updates
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { id } = await params;
