@@ -23,7 +23,7 @@ const ChatContainer = ({ chatId, isLoading, setIsLoading, fetchAgain }: ChatCont
     setIsLoading(true);
 
     try {
-      const response = await fetch(`http://localhost:3000/api/chats/${chatId}`);
+      const response = await fetch(`/api/chats/${chatId}`);
       const chatData = await response.json();
 
       if (response.ok) {
