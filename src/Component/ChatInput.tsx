@@ -8,7 +8,6 @@ interface ChatInputProps {
   placeholder?: string;
 }
 
-
 const ChatInput = ({ chatId, onMessageSent, disabled = false, placeholder = "Type a message..." }: ChatInputProps) => {
   const [message, setMessage] = useState('');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -27,14 +26,13 @@ const ChatInput = ({ chatId, onMessageSent, disabled = false, placeholder = "Typ
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!chatId || !message.trim() || disabled) return;
-    
+
     try {
       const response = await fetch(`/api/chats/${chatId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question: message, answer: "" }), // Empty answer, will be handled on backend
+        body: JSON.stringify({ question: message, answer: "" }),
       });
-
 
       if (!response.ok) {
         console.error("Failed to send message");
@@ -56,33 +54,31 @@ const ChatInput = ({ chatId, onMessageSent, disabled = false, placeholder = "Typ
   };
 
   return (
-    <div className="border-t border-gray-800 bg-[#1A1A1A] py-4 px-4 sm:px-6">
-      <div className="max-w-4xl mx-auto">
+    <div className="border-t border-gray-800 bg-[#121212] px-4 py-3 sm:px-6">
+      <div className="max-w-3xl mx-auto">
         <form onSubmit={handleSubmit} className="relative">
-          <div className={`rounded-lg overflow-hidden border border-gray-700 focus-within:border-purple-500 ${disabled ? "opacity-60" : ""}`}>
-            <div className="flex items-end">
-              <textarea
-                ref={textareaRef}
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                onKeyDown={handleKeyDown}
-                placeholder={placeholder}
-                disabled={disabled}
-                rows={1}
-                className="min-h-[40px] w-full resize-none bg-transparent py-3 pl-4 pr-12 text-white placeholder:text-white/40 focus:outline-none disabled:cursor-not-allowed"
-              />
-              <button
-                type="submit"
-                disabled={disabled || !message.trim()}
-                className={`absolute bottom-1.5 right-1.5 h-8 w-8 rounded-md ${
-                  message.trim() ? "bg-purple-600 hover:bg-purple-700" : "bg-gray-700"
-                } text-white/90 flex items-center justify-center transition-colors ${
-                  !message.trim() ? "opacity-60" : ""
-                }`}
-              >
-                <SendHorizontal size={16} />
-              </button>
-            </div>
+          <div className={`flex items-center bg-gray-900/90 border border-gray-700 rounded-xl px-4 py-2 
+              focus-within:border-purple-500 transition-all ${disabled ? "opacity-60 cursor-not-allowed" : ""}`}
+          >
+            <textarea
+              ref={textareaRef}
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder={placeholder}
+              disabled={disabled}
+              rows={1}
+              className="w-full resize-none bg-transparent py-2 text-white placeholder:text-white/40 focus:outline-none disabled:cursor-not-allowed"
+            />
+            <button
+              type="submit"
+              disabled={disabled || !message.trim()}
+              className={`ml-3 h-10 w-10 rounded-full flex items-center justify-center transition-all ${
+                message.trim() ? "bg-purple-600 hover:bg-purple-700" : "bg-gray-700 opacity-50"
+              } text-white`}
+            >
+              <SendHorizontal size={18} />
+            </button>
           </div>
         </form>
       </div>
