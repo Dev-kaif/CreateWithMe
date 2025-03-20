@@ -1,36 +1,96 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 AI-Powered Social Media Content Generator
 
-## Getting Started
+This project is an AI-driven chatbot that generates **engaging social media content** using **Google Gemini API**. The chatbot is designed to analyze user input, check for missing details, and then generate high-quality posts, stories, and taglines for **ScrollConnect**, an event management platform.
 
-First, run the development server:
+## ✨ Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Context Analysis:** Ensures the input contains all necessary details (content type, theme, target audience, tone, etc.).
+- **AI-Powered Content Generation:** Generates Instagram posts, stories, captions, and more.
+- **Smart Follow-Ups:** If information is missing, the chatbot asks for clarification.
+- **Database Integration:** All messages (user inputs and AI responses) are stored in MongoDB.
+- **Well-Formatted Responses:** AI ensures proper spacing and readability in replies.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🛠️ Tech Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Backend: Next.js (API Routes)**
+- **AI:** Google Gemini Free API
+- **Database:** MongoDB
+- **Frontend: Next.js**
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 📂 Project Structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🚀 How It Works
 
-## Deploy on Vercel
+### 1️⃣ **User Input**
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The user submits a request for content generation. Example:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+> "Create an Instagram Story promoting our upcoming hackathon, CodeRush. Target audience is college students, and the tone should be exciting."
+
+### 2️⃣ **AI Context Analysis**
+
+The AI checks for missing details (e.g., content type, theme, target audience) and asks for clarification if needed.
+
+### 3️⃣ **Content Generation**
+
+Once the request is complete, AI generates a structured response:
+
+### 4️⃣ **Response Storage**
+
+All responses (including AI follow-ups) are stored in the database for frontend retrieval.
+
+---
+
+## 🏗️ Installation & Setup
+
+1. **Clone the repository:**
+2. **Install dependencies:**
+3. **Set up environment variables:**
+   Create a `.env` file and add:
+4. **Start the server:**
+
+---
+
+## 📌 API Endpoints
+
+### `PUT /api/chats/[id]`
+
+Handles user requests and AI responses.
+
+#### Request Body:
+
+#### Response:
+
+---
+
+## 🤖 Future Improvements
+
+✅ Support for more platforms (Twitter, LinkedIn, Facebook)
+✅ Enhanced AI fine-tuning for more dynamic responses
+✅ Interactive frontend for better user experience
+
+---
+
+## 💡 Contributing
+
+1. Fork the repo
+2. Create a new branch (`feature-xyz`)
+3. Commit your changes
+4. Open a pull request
+
+---
+
+## 📜 License
+
+This project is licensed under the MIT License.
+
+---
+
+### 🔥 Made with ❤️ for ScrollConnect 🚀
+
