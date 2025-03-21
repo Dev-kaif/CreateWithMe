@@ -151,7 +151,6 @@ async function analyzeAndRefineContext(
       `;
 
     const result = await model.generateContent(contextAnalysisPrompt);
-    console.log(contextAnalysisPrompt);
 
     let responseText = await result.response.text();
 
@@ -225,7 +224,6 @@ export async function PUT(
     // Step 1: Analyze the context
     const contextAnalysis = await analyzeAndRefineContext(question, id);
 
-    console.log(contextAnalysis.response);
 
     // Save AI response for context check
     await Chat.updateOne(
