@@ -9,7 +9,7 @@ connectDb();
 
 export async function GET(
   req: NextRequest,
-  { params }:{ params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { id } = await params;
@@ -27,14 +27,15 @@ export async function GET(
   }
 }
 
-
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY as string);
 
 async function analyzeAndRefineContext(
-  question: string
+  question: string,
+  id: string
 ): Promise<{ response: string; complete: boolean }> {
   try {
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const chatHistory = await getChatHistory(id);
 
     // const contextAnalysisPrompt = `
     //   You are an AI assistant helping a user create social media content for ScrollConnect, an event management platform.
@@ -112,8 +113,11 @@ async function analyzeAndRefineContext(
       🔹 **User Request:**  
       "${question}"
 
+      **Previous Conversation:**  
+      ${chatHistory}
+
       ### **Step 1: Identify Key Details**  
-      Look for the following **inside the user's message**:  
+      Look for the following **inside the user's message & history of chats**:  
 
       1️⃣ **Content Type** → (e.g., Instagram Story, Post, Carousel, Reel)  
       2️⃣ **Theme/Purpose** → (e.g., event promotion, engagement, awareness, countdown)  
@@ -132,6 +136,13 @@ async function analyzeAndRefineContext(
       🔹 [Missing Detail 2] → [Why it’s needed & example]\n
       \n💡 Try adding these for the best results! 🚀", "complete": false}
 
+      - **If the user says they don't want to or can't share certain details, offer them choices to select from and auto-fill missing details based on best practices.**  
+      - **If the user says to "continue with all the given info till now," do not ask for further details and proceed with the available information immediately.**  
+      - If **some details are missing**, follow these rules:  
+        - **If the user says they don’t want to or can’t provide something, auto-fill it based on best practices instead of asking again.**  
+        - **If the detail is essential (like Content Type), suggest common options instead of forcing them to provide it.**  
+        - **Otherwise, skip and proceed with available details.**
+
       - **DO NOT return generic missing details. Always provide guidance.**  
       - **DO NOT format responses as a code block. Only return JSON.**  
       - Ensure **proper spacing between lines for readability**.
@@ -140,6 +151,8 @@ async function analyzeAndRefineContext(
       `;
 
     const result = await model.generateContent(contextAnalysisPrompt);
+    console.log(contextAnalysisPrompt);
+
     let responseText = await result.response.text();
 
     // 🔥 Remove triple backticks if present
@@ -169,6 +182,23 @@ async function generateAiResponse(refinedPrompt: string): Promise<string> {
   }
 }
 
+async function getChatHistory(id: string) {
+  // **🔹 Fetch chat history**
+  const chat = await Chat.findById(id);
+  const history = chat?.history || [];
+
+  // **🔹 Format history for Gemini**
+  const chatHistory = history
+    .map(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (msg: any) =>
+        `${msg.role === "user" ? "User" : "AI"}: ${msg.parts[0].text}`
+    )
+    .join("\n");
+
+  return chatHistory;
+}
+
 // PUT API for handling chat updates
 export async function PUT(
   req: NextRequest,
@@ -193,7 +223,7 @@ export async function PUT(
     );
 
     // Step 1: Analyze the context
-    const contextAnalysis = await analyzeAndRefineContext(question);
+    const contextAnalysis = await analyzeAndRefineContext(question, id);
 
     console.log(contextAnalysis.response);
 
@@ -218,14 +248,26 @@ export async function PUT(
       );
     }
 
-    // Step 2: Generate AI response only if context is complete
+    const chatHistory = await getChatHistory(id);
+
+    // **🔹 Update prompt to include chat history**
+    // **🔹 Update prompt to ensure proper line breaks**
     const refinedPrompt = `
       You are an AI-powered social media content creator for ScrollConnect, an event management platform.
       Generate high-quality Instagram content based on the provided context.
 
-      User's input: "${question}"
+      **Previous Conversation:**  
+      ${chatHistory}
 
-      Ensure the response is structured with a catchy **hook, main content, and CTA**.
+      **User's new request:** "${question}"
+
+      Ensure the response is structured with a **catchy hook, main content, and CTA**.
+
+      Formatting rules:
+      - Use **two raw newlines (\n\n) instead of HTML <br> tags** when providing multiple options.
+      - Do **NOT** use <br> or any HTML formatting—only use raw newlines.
+      - Maintain clarity, conciseness, and engagement.
+      - Keep the content structured and visually appealing.
     `;
 
     const aiResponse = await generateAiResponse(refinedPrompt);
