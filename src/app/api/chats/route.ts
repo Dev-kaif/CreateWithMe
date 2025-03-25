@@ -10,11 +10,11 @@ connectDb();
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { userId, text } = body;
+    const { userId } = body;
     
-    if (!userId || !text) {
+    if (!userId) {
       return NextResponse.json(
-        { message: 'userId and text are required' },
+        { message: 'userId are required' },
         { status: 400 }
       );
     }
@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
     // Create a new chat with the user's initial message
     const newChat = new Chat({
       userId,
-      history: [{ role: "user", parts: [{ text }] }],
+      history: [],
     });
     const savedChat = await newChat.save();
     
@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
         chats: [
           {
             _id: savedChat._id,
-            title: text.substring(0, 40),
+            title: "New Chat" ,
           },
         ],
       });
@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
       // Push the new chat into the existing chats array
       await UserChats.updateOne(
         { userId },
-        { $push: { chats: { _id: savedChat._id, title: text.substring(0, 40) } } }
+        { $push: { chats: { _id: savedChat._id, title: "New Chat" } } }
       );
     }
     
