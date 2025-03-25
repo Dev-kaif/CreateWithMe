@@ -13,7 +13,6 @@ interface ChatSidebarProps {
   activeChat: string | null;
   onChatSelect: (chatId: string) => void;
   onNewChat: () => void;
-  setIsLoadingNewChat: (chatId: string) => void;
 }
 
 const ChatSidebar = ({ activeChat, onChatSelect, onNewChat }: ChatSidebarProps) => {
