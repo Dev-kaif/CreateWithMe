@@ -41,8 +41,8 @@ async function analyzeImage(imageBase64: string, mimeType: string): Promise<stri
           parts: [
             { text: "Analyze this image and extract relevant event-related details." },
             { 
-              inline_data: { 
-                mime_type: mimeType,
+              inlineData: { 
+                mimeType: mimeType,
                 data: imageBase64,
               } 
             }
@@ -226,8 +226,23 @@ export async function PUT(
     const fullContext = `${extractedContext}\n\n${question}`.trim();
     const contextAnalysis = await analyzeAndRefineContext(fullContext, id);
 
+
     // If context is incomplete, return without generating content
     if (!contextAnalysis.complete) {
+      
+      // Save AI response for context check
+      await Chat.updateOne(
+        { _id: id },
+        {
+          $push: {
+            history: {
+              role: "model",
+              parts: [{ text: contextAnalysis.response }],
+            },
+          },
+        }
+      );
+
       return NextResponse.json(
         { message: contextAnalysis.response },
         { status: 200 }
